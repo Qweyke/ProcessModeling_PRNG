@@ -2,22 +2,33 @@
 
 constexpr uint16_t PERCENTS = 100;
 
-double Lcg::normalize(const uint64_t num, const uint64_t mod)
+Lcg::Lcg(const uint64_t modulus,
+         const uint64_t multiplier,
+         const uint64_t increment,
+         const uint64_t seed)
+: modulus(modulus)
+, multiplier(multiplier)
+, increment(increment)
+, seed(seed)
 {
-    return static_cast<double>(num) / static_cast<double>(mod - 1);
 }
 
-void Lcg::generateValues(const uint64_t modulus,
-                         const uint64_t multiplier,
-                         const uint64_t increment,
-                         uint64_t       seed)
+long double Lcg::normalize(const uint64_t num, const uint64_t mod) const
 {
-    while (std::find(this->values.begin(), this->values.end(), normalize(seed, modulus))
-           == this->values.end())
+    return static_cast<long double>(num) / static_cast<long double>(mod - 1);
+}
+
+void Lcg::generateValues(uint64_t quantity)
+{
+    std::unordered_set<long double> valuesUnordered;
+
+    while (valuesUnordered.find(normalize(this->seed, this->modulus)) == valuesUnordered.end())
     {
-        this->values.push_back(normalize(seed, modulus));
-        seed = (multiplier * seed + increment) % modulus;
+        valuesUnordered.insert(normalize(this->seed, this->modulus));
+        this->seed = (this->multiplier * this->seed + this->increment) % this->modulus;
     }
+
+    this->values.assign(valuesUnordered.begin(), valuesUnordered.end());
     std::sort(this->values.begin(), this->values.end());
 
     this->period        = this->values.size();
@@ -27,10 +38,10 @@ void Lcg::generateValues(const uint64_t modulus,
     calculateHalvesQuantity();
 }
 
-double Lcg::calculateExpectedValue(uint16_t power)
+long double Lcg::calculateExpectedValue(uint16_t power)
 {
-    double sum = 0;
-    for (const double& element : this->values)
+    long double sum = 0;
+    for (const long double& element : this->values)
     {
         if (power == 1)
             sum += element;
@@ -39,7 +50,7 @@ double Lcg::calculateExpectedValue(uint16_t power)
         else
             sum += pow(element, power);
     }
-    return (1 / static_cast<double>(this->values.size())) * sum;
+    return (1 / static_cast<long double>(this->values.size())) * sum;
 }
 
 void Lcg::calculateStandardDeviation()
@@ -58,42 +69,43 @@ void Lcg::calculateValuesFrequency()
     size_t qnty
         = std::count_if(this->values.begin(),
                         this->values.end(),
-                        [this](double element)
+                        [this](long double element)
                         {
                             return (element >= (this->expectedValue - this->standardDeviation)
                                     && element <= (this->expectedValue + this->standardDeviation));
                         });
 
-    this->valuesFrequencyInInterval = static_cast<double>(qnty) / this->period * PERCENTS;
+    this->valuesFrequencyInInterval = static_cast<long double>(qnty) / this->period * PERCENTS;
 }
 
 void Lcg::calculateHalvesQuantity()
 {
     size_t rightHalf = std::count_if(this->values.begin(),
                                      this->values.end(),
-                                     [this](double element) { return (element >= 0.5); });
+                                     [this](long double element) { return (element >= 0.5); });
 
     this->rightCount = static_cast<uint64_t>(rightHalf);
     this->leftCount  = this->period - this->rightCount;
 }
 
-void Lcg::displayValues()
+void Lcg::displayValues(uint64_t quantity) const
 {
-    for (const double& element : this->values)
+    for (int i = 0; i < quantity; i++)
     {
-        std::cout << element << " ";
+        std::cout << values[i] << " ";
     }
+    std::cout << "\n\n";
 }
 
 void Lcg::compareResults() {}
 
-std::vector<double> Lcg::getValuesSet() { return Lcg::values; }
+std::vector<long double> Lcg::getValuesVector() { return Lcg::values; }
 
-uint64_t Lcg::getPeriod() const { return this->period; }
-double   Lcg::getExpectedValue() const { return this->expectedValue; }
-double   Lcg::getStatisticalDispersion() const { return this->statisticalDispersion; }
-double   Lcg::getStandardDeviation() const { return this->standardDeviation; }
-double   Lcg::getIntervalSize() const { return this->intervalSize; }
-double   Lcg::getValuesFrequencyInInterval() const { return this->valuesFrequencyInInterval; }
-uint64_t Lcg::getLeftCount() const { return this->leftCount; }
-uint64_t Lcg::getRightCount() const { return this->rightCount; }
+uint64_t    Lcg::getPeriod() const { return this->period; }
+long double Lcg::getExpectedValue() const { return this->expectedValue; }
+long double Lcg::getStatisticalDispersion() const { return this->statisticalDispersion; }
+long double Lcg::getStandardDeviation() const { return this->standardDeviation; }
+long double Lcg::getIntervalSize() const { return this->intervalSize; }
+long double Lcg::getValuesFrequencyInInterval() const { return this->valuesFrequencyInInterval; }
+uint64_t    Lcg::getLeftCount() const { return this->leftCount; }
+uint64_t    Lcg::getRightCount() const { return this->rightCount; }
