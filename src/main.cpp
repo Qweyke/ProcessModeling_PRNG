@@ -1,39 +1,26 @@
-#include <cmath>
-#include <cstdint>
-#include <iostream>
-#include <unordered_set>
-
-
+#include "lcg.h"
 namespace
 {
-constexpr uint64_t MODULUS    = (1ull << 25);
+constexpr uint64_t MODULUS    = (1ull << 21);
 constexpr uint64_t MULTIPLIER = 323;
 constexpr uint64_t INCREMENT  = 2;
 constexpr uint64_t SEED       = 2;
 }
 
-uint64_t lcg(uint64_t mod,
-             uint64_t mult,
-             uint64_t incr,
-             uint64_t seed)  // Linear Congruential Generator
+
+int main()
 {
-    return (mult * seed + incr) % mod;
+    Lcg lcg1;
+    lcg1.generateValues(MODULUS, MULTIPLIER, INCREMENT, SEED);
+    /*lcg1.displayValues();*/
+    std::cout << "Calculated period is " << lcg1.getPeriod() << "\n";
+    std::cout << "Expected value = " << lcg1.getExpectedValue() << "\n";
+    std::cout << "Statistical dispersion = " << lcg1.getStatisticalDispersion() << "\n";
+    std::cout << "Standard deviation = " << lcg1.getStandardDeviation() << "\n";
+    std::cout << "Interval size = " << lcg1.getIntervalSize() << "\n";
+    std::cout << "Values percentage in interval = " << lcg1.getValuesFrequencyInInterval()
+              << " %\n";
+    std::cout << "Quantity of left half values = " << lcg1.getLeftCount() << "\n";
+    std::cout << "Quantity of right half values = " << lcg1.getRightCount() << "\n";
+    return 0;
 }
-
-void detectPrngPeriod(uint64_t mod, uint64_t mult, uint64_t incr, uint64_t seed)
-{
-    std::unordered_set<uint64_t> values;
-    uint64_t                     num    = seed;
-    uint64_t                     period = 0;
-
-    while (values.find(num) == values.end())
-    {
-        values.insert(num);
-        num = lcg(mod, mult, incr, num);
-        /*std::cout << num << std::endl;*/
-        period++;
-    }
-    std::cout << "Period = " << period << std::endl;
-}
-
-int main() { detectPrngPeriod(MODULUS, MULTIPLIER, INCREMENT, SEED); }
