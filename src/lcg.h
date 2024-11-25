@@ -16,7 +16,7 @@ public:
 
     void generateValues(uint64_t quantity);
     void displayValues(uint64_t quantity) const;
-    void compareResults();
+    void testGeneratedValues(std::unordered_set<long double> valuesUnordered);
 
     std::vector<long double> getValuesVector();
 

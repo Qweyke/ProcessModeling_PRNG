@@ -38,6 +38,18 @@ void Lcg::generateValues(uint64_t quantity)
     calculateHalvesQuantity();
 }
 
+void Lcg::testGeneratedValues(std::unordered_set<long double> valuesUnordered)
+{
+    this->values.assign(valuesUnordered.begin(), valuesUnordered.end());
+    std::sort(this->values.begin(), this->values.end());
+
+    this->period        = this->values.size();
+    this->expectedValue = calculateExpectedValue(1);
+    calculateStandardDeviation();
+    calculateValuesFrequency();
+    calculateHalvesQuantity();
+}
+
 long double Lcg::calculateExpectedValue(uint16_t power)
 {
     long double sum = 0;
@@ -96,8 +108,6 @@ void Lcg::displayValues(uint64_t quantity) const
     }
     std::cout << "\n\n";
 }
-
-void Lcg::compareResults() {}
 
 std::vector<long double> Lcg::getValuesVector() { return Lcg::values; }
 
