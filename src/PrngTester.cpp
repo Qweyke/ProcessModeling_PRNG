@@ -4,18 +4,27 @@ namespace
 constexpr uint16_t PERCENTS = 100;
 }
 
-PrngTester::PrngTester(std::vector<long double>& values) {}
+PrngTester::PrngTester(std::vector<long double>& values)
+: values(values)
+, expectedValue(0)
+, standardDeviation(0)
+, statisticalDispersion(0)
+, intervalSize(0)
+, valuesFrequencyInInterval(0)
+, leftCount(0)
+, rightCount(0)
+{
+}
 
 void PrngTester::testGeneratedValues()
 {
-    this->values = values;
     std::sort(this->values.begin(), this->values.end());
 
     this->valuesCount   = this->values.size();
     this->expectedValue = calculateExpectedValue(1);
-    calculateStandardDeviation();
-    calculateValuesFrequency();
-    calculateHalvesQuantity();
+    this->calculateStandardDeviation();
+    this->calculateValuesFrequency();
+    this->calculateHalvesQuantity();
 }
 
 long double PrngTester::calculateExpectedValue(uint16_t power)

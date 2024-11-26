@@ -22,7 +22,7 @@ public:
     uint64_t    getRightCount() const;
 
 private:
-    std::vector<long double> values;
+    std::vector<long double>& values;
 
     uint64_t    valuesCount;
     long double expectedValue;

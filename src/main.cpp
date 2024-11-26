@@ -5,7 +5,7 @@
 
 namespace
 {
-constexpr uint64_t MODULUS    = (1ull << 24);
+constexpr uint64_t MODULUS    = (1ull << 25);
 constexpr uint64_t MULTIPLIER = 323;
 constexpr uint64_t INCREMENT  = 2;
 constexpr uint64_t SEED       = 2;
@@ -52,8 +52,9 @@ public:
 
         for (int i = 0; i < quantity; i++)
         {
-            if (valuesUnordered.find(normalize(x, this->modulus)) == valuesUnordered.end())
-                throw std::logic_error("Identical value found! Period = " + std::to_string(seed));
+            if (valuesUnordered.find(normalize(x, this->modulus)) != valuesUnordered.end())
+                throw std::logic_error("Identical value found! Period = " + std::to_string(seed)
+                                       + "\n");
 
             valuesUnordered.insert(normalize(x, this->modulus));
             x = (this->multiplier * x + this->increment) % this->modulus;
@@ -89,7 +90,16 @@ int main()
     std::mt19937                                mtGenerator(SEED);
     std::uniform_real_distribution<long double> normalize(0.0, 1.0);
 
-    lcgValues = lcgGenerator.generateValues(QUANTITY);
+    try
+    {
+        lcgValues = lcgGenerator.generateValues(QUANTITY);
+    }
+    catch (const std::logic_error& e)
+    {
+        std::cout << e.what();
+        return 1;
+    }
+
     for (int i = 0; i < QUANTITY; i++)
     {
         mtValues.push_back(normalize(mtGenerator));
@@ -99,7 +109,11 @@ int main()
     PrngTester lcgTester(lcgValues);
     PrngTester mtTester(mtValues);
 
-    /*lcgTester.displayValues(10);*/
+    lcgTester.displayValues(10);
+    mtTester.displayValues(10);
+
+    lcgTester.testGeneratedValues();
+    mtTester.testGeneratedValues();
 
     std::cout << "Lcg. Expected value = " << lcgTester.getExpectedValue() << "\n";
     std::cout << "Mt. Expected value = " << mtTester.getExpectedValue() << "\n";
