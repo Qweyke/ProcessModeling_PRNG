@@ -21,10 +21,20 @@
     <ClCompile Include="src\lcg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PrngTester.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lcg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\PrngTester.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".clang-format" />
+    <None Include=".gitignore" />
   </ItemGroup>
 </Project>

@@ -133,9 +133,15 @@
   <ItemGroup>
     <ClCompile Include="src\lcg.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PrngTester.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lcg.h" />
+    <ClInclude Include="src\PrngTester.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".clang-format" />
+    <None Include=".gitignore" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
