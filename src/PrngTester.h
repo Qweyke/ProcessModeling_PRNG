@@ -5,22 +5,21 @@
 #include <unordered_set>
 
 #pragma once
-
-class Lcg
+class PrngTester
 {
 public:
-    Lcg(const uint64_t modulus,
-        const uint64_t multiplier,
-        const uint64_t increment,
-        const uint64_t seed);
+    PrngTester(const uint64_t modulus,
+               const uint64_t multiplier,
+               const uint64_t increment,
+               const uint64_t seed);
 
-    void generateValues(uint64_t quantity);
+    /*void generateValues(uint64_t quantity);*/
     void displayValues(uint64_t quantity) const;
     void testGeneratedValues(std::unordered_set<long double> valuesUnordered);
 
     std::vector<long double> getValuesVector();
 
-    uint64_t    getPeriod() const;
+    /*uint64_t    getPeriod() const;*/
     long double getExpectedValue() const;
     long double getStatisticalDispersion() const;
     long double getStandardDeviation() const;
@@ -37,7 +36,8 @@ private:
     const uint64_t increment;
     uint64_t       seed;
 
-    uint64_t    period;
+    /*uint64_t    period;*/
+    uint64_t    valuesCount;
     long double expectedValue;
     long double standardDeviation;
     long double statisticalDispersion;
@@ -46,7 +46,7 @@ private:
     uint64_t    leftCount;
     uint64_t    rightCount;
 
-    long double normalize(uint64_t num, uint64_t mod) const;
+    /*long double normalize(uint64_t num, uint64_t mod) const;*/
 
     long double calculateExpectedValue(uint16_t power);
     void        calculateStandardDeviation();
