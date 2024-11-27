@@ -112,31 +112,13 @@ int main()
     lcgTester.displayValues(10);
     mtTester.displayValues(10);
 
+
+    std::cout << "LCG results: \n";
+    std::cout << "Lcg. Period = " << lcgGenerator.calculatePeriod() << "\n\n";
     lcgTester.testGeneratedValues();
+
+    std::cout << "MT19937 results: \n";
     mtTester.testGeneratedValues();
-
-    std::cout << "Lcg. Expected value = " << lcgTester.getExpectedValue() << "\n";
-    std::cout << "Mt. Expected value = " << mtTester.getExpectedValue() << "\n";
-
-    std::cout << "Lcg. Statistical dispersion = " << lcgTester.getStatisticalDispersion() << "\n";
-    std::cout << "Mt. Statistical dispersion = " << mtTester.getStatisticalDispersion() << "\n";
-
-    std::cout << "Lcg. Standard deviation = " << lcgTester.getStandardDeviation() << "\n";
-    std::cout << "Mt. Standard deviation = " << mtTester.getStandardDeviation() << "\n";
-
-    std::cout << "Lcg. Interval size = " << lcgTester.getIntervalSize() << "\n";
-    std::cout << "Mt. Interval size = " << mtTester.getIntervalSize() << "\n";
-
-    std::cout << "Lcg.Values percentage in interval = " << lcgTester.getValuesFrequencyInInterval()
-              << " %\n";
-    std::cout << "Mt. Values percentage in interval = " << mtTester.getValuesFrequencyInInterval()
-              << " %\n";
-
-    std::cout << "Lcg.Quantity of left half values = " << lcgTester.getLeftCount() << "\n";
-    std::cout << "Mt. Quantity of left half values = " << mtTester.getLeftCount() << "\n";
-
-    std::cout << "Lcg.Quantity of right half values = " << lcgTester.getRightCount() << "\n";
-    std::cout << "Mt. Quantity of right half values = " << mtTester.getRightCount() << "\n";
 
     return 0;
 }

@@ -13,6 +13,7 @@ PrngTester::PrngTester(std::vector<long double>& values)
 , valuesFrequencyInInterval(0)
 , leftCount(0)
 , rightCount(0)
+, valuesCount(0)
 {
 }
 
@@ -25,6 +26,14 @@ void PrngTester::testGeneratedValues()
     this->calculateStandardDeviation();
     this->calculateValuesFrequency();
     this->calculateHalvesQuantity();
+
+    std::cout << "Expected value = " << this->expectedValue << "\n";
+    std::cout << "Statistical dispersion = " << this->statisticalDispersion << "\n";
+    std::cout << "Standard deviation = " << this->standardDeviation << "\n";
+    std::cout << "Interval size = " << this->intervalSize << "\n";
+    std::cout << "Values percentage in interval = " << this->valuesFrequencyInInterval << " %\n";
+    std::cout << "Quantity of left half values = " << this->leftCount << "\n";
+    std::cout << "Quantity of right half values = " << this->rightCount << "\n\n";
 }
 
 long double PrngTester::calculateExpectedValue(uint16_t power)
